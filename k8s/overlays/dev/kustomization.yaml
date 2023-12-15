@@ -9,14 +9,14 @@ namespace: idp-dev
 # namespace: demo-postgres-idp_training-dev
 
 resources:
-  - ../../base
-  - ingress.yaml
+- ../../base
+- ingress.yaml
 
-images:
   # ATENTION name = image.name NOT name = spec.containers[0].name
-  - name: ghcr.io/xidp/demo-postgres
-    newTag: v0.1.0
+images:
+- name: ghcr.io/xidp/demo-postgres
+  newTag: e946613
 
 replicas:
-  - name: demo-postgres # the deployment name
-    count: 1
+- count: 1
+  name: demo-postgres
