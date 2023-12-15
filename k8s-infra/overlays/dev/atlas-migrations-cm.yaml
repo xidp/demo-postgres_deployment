@@ -1,1 +1,22 @@
-# leave this empty, to avoid ref error
+apiVersion: v1
+data:
+  20230920120559_initial.sql: |-
+    -- Create "todo" table
+    CREATE TABLE "public"."todo" (
+      "id" serial NOT NULL,
+      "name" character varying NOT NULL,
+      "description" character varying NOT NULL,
+      "createdAt" character varying NOT NULL,
+      "itsDone" boolean NOT NULL DEFAULT false,
+      PRIMARY KEY ("id")
+    );
+  20230920120600_seed.sql: "-- Seed \"todo\" table\nINSERT INTO \"public\".\"todo\"
+    (\"name\", \"description\", \"createdAt\")  \nVALUES ('teste', 'from atlas migration','2023-09-20T15:46:12.044Z');"
+  atlas.sum: |
+    h1:UxVSn7IdwGD1NAJ5mr0zEvxjPH1dFH204r/SfZw4tw4=
+    20230920120559_initial.sql h1:u1b3WKIoJwvJ8YlLyJzmtW2k0+KThCWJ33VdZZsw3ns=
+    20230920120600_seed.sql h1:LYCj6pkqbtpoW/WDbUYRgPKdc4d5boMpjZjlPv1NOTQ=
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: migrations-cm
