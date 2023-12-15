@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+commonLabels:
+  app.xgeeks.org/team: idp_training
+  backstage.io/kubernetes-id: demo-postgres
+
+namespace: idp-dev
+# namespace: demo-postgres-idp_training-dev
+
+resources:
+  - random-password.yaml # Sync -20
+  - claim-postgresdb.yaml # Sync -10
+  - atlas-migrations-cm.yaml # Sync 0
+  - atlas-migrations.yaml # Sync 1

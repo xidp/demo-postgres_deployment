@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-postgres
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+spec:
+  selector:
+    app: demo-postgres
+  # type: LoadBalancer | ClusterIP | NodePort
+  ports:
+    - name: http
+      port: 3000 # service port
+      protocol: TCP
+      targetPort: 3000 # container port

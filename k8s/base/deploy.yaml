@@ -1,0 +1,60 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-postgres
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-postgres
+  template:
+    metadata:
+      labels:
+        app: demo-postgres
+      annotations:
+        backstage.io/kubernetes-id: demo-postgres
+    spec:
+      imagePullSecrets:
+        - name: regcred-ghcr-io-secret
+      containers:
+        - name: demo-postgres
+          image: ghcr.io/xidp/demo-postgres
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 125m
+              memory: 250Mi
+            limits:
+              cpu: 250m
+              memory: 500Mi
+          env:
+            - name: NODE_ENV
+              value: production
+            - name: DB_DRIVER
+              value: postgres
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: demo-postgres-dev-db-claim-secret
+                  key: DB_HOST
+            - name: DB_USER
+              value: psqladmin # TODO: remove the prefix, from DB_USER at secret
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: demo-postgres-dev-db-claim-secret
+                  key: DB_PASSWORD
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: demo-postgres-dev-db-claim-secret
+                  key: DB_PORT
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: demo-postgres-dev-db-claim-secret
+                  key: DB_NAME

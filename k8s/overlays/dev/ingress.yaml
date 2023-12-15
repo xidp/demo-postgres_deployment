@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: demo-postgres
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+    cert-manager.io/acme-challenge-type: http01
+    cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: demo-postgres-dev.127.0.0.1.nip.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: demo-postgres
+                port:
+                  number: 3000
+  tls:
+    - hosts:
+        - demo-postgres-dev.127.0.0.1.nip.io
+      secretName: demo-postgres-dev.127-0.0.1.nip.io-tls # will be auto created
